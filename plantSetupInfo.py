@@ -1,8 +1,8 @@
 PLANT_MODE = {
-    "A": 1,
-    "B": 4,
+    "A": 0,
+    "B": 0,
     "C": 0,
-    "D": 2
+    "D": 0
 }
 
 PLANT_WATERAMOUNT = {

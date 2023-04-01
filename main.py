@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from time import *
+import time
 from PlantClass import Plant
 
 # Setup section
@@ -32,13 +32,11 @@ while True:
     plantC.updateParameters()
     plantD.updateParameters()
 
-    # Check conditions section
-
-    # Water section
+    # Check conditions section and watering
 
     # Send information
-
-    sleep(2.5)
+    print("PlantA:", plantB.mode, plantB.waterAmount, plantB.wateringTime, plantB.humidityThreshold)
+    time.sleep(2.5)
 
 
 

@@ -1,34 +1,42 @@
 import RPi.GPIO as GPIO
 from time import *
 
-from plantSetupInfo_dev import *
+import plantSetupInfo
 
 class Plant:
 	def __init__(self, symbol, pumpPin, humiditySensorPin):
 		self.symbol = symbol
 		self.pumpPin = pumpPin
 		self.humiditySensorPin = humiditySensorPin
-		self.mode = 0					# 0 - plant is off, 1 - manual mode, 2 - strict time mode, 3 - time plus humidity measure mode, 4 - humidity measure mode
+
+		self.mode = 0					# 0 - plant is off, 1 - manual mode, 2 - time interval mode, 3 - time plus humidity control mode, 4 - humidity control mode
 		self.waterAmount = 0			# in ml, the converted to pump time duration
 		self.wateringTime = 0			# time of scheduled watering
 		self.humidityThreshold = 0		# in %
 		self.minWateringInterval = 0	# in hours
+
+		self.lastWateringTime = 0		
 	
 
 	def updateParameters(self):
-		self.mode = PLANT_MODE[self.symbol]
-		self.waterAmount = PLANT_WATERAMOUNT[self.symbol]
-		self.wateringTime = PLANT_WATERINGTIME[self.symbol]
-		self.humidityThreshold = PLANT_HUMIDITYTRESHOLD[self.symbol]
-		self.minWateringInterval = PLANT_MINWATERINGINTERVAL[self.symbol]
+		self.mode = plantSetupInfo.PLANT_MODE[self.symbol]
+		self.waterAmount = plantSetupInfo.PLANT_WATERAMOUNT[self.symbol]
+		self.wateringTime = plantSetupInfo.PLANT_WATERINGTIME[self.symbol]
+		self.humidityThreshold = plantSetupInfo.PLANT_HUMIDITYTRESHOLD[self.symbol]
+		self.minWateringInterval = plantSetupInfo.PLANT_MINWATERINGINTERVAL[self.symbol]
 
+
+	def updateLastWateringTime(self):
+		print("a")
 
 	def checkForWateringNeed(self):
 		if (self.mode == 1):	# Manual mode	#TODO: Add conditions
 			return True
-		elif(self.mode == 2):	# Time interval mode #TODO: Add conditions
+		elif(self.mode == 2):	# Time interval mode	#TODO: Add conditions
 			return True
-		elif(self.mode == 3):	# Humidity control mode #TODO: Add conditions
+		elif (self.mode ==3):	# Time interval + Humidity control mode	#TODO: Add conditions
+			return True
+		elif(self.mode == 4):	# Humidity control mode	#TODO: Add conditions
 			return True
 		else:
 			print("The plant", self.symbol, "is turned off or wrong mode was declared.")
@@ -53,3 +61,4 @@ class Plant:
 
 	def pumpOff(self):
 		GPIO.output(self.pumpPin, GPIO.LOW)
+
