@@ -27,9 +27,9 @@ PLANT_HUMIDITYTRESHOLD = {
 }
 
 PLANT_MINWATERINGINTERVAL = {
-    "A": 7,
-    "B": 7,
-    "C": 10,
-    "D": 10
+    "A": (0, 7, 0),
+    "B": (0, 7, 30),
+    "C": (0, 10, 0),
+    "D": (0, 10, 0),
 }
 

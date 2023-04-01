@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from time import *
+import time
 
 import plantSetupInfo
 
@@ -15,7 +15,7 @@ class Plant:
 		self.humidityThreshold = 0		# in %
 		self.minWateringInterval = 0	# in hours
 
-		self.lastWateringTime = 0		
+		self.lastWateringTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])	
 	
 
 	def updateParameters(self):
@@ -27,9 +27,10 @@ class Plant:
 
 
 	def updateLastWateringTime(self):
-		print("a")
+		self.lastWateringTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])
 
-	def checkForWateringNeed(self):
+
+	def checkForWateringNeed(self, currentTime):
 		if (self.mode == 1):	# Manual mode	#TODO: Add conditions
 			return True
 		elif(self.mode == 2):	# Time interval mode	#TODO: Add conditions
@@ -47,7 +48,7 @@ class Plant:
 		print("The plant", self.symbol, "is now watered.")		
 		self.pumpOn()
 		wateringDuration = self.calculateWateringDuration()
-		sleep(wateringDuration)
+		time.sleep(wateringDuration)
 		self.pumpOff()
 
 

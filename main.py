@@ -33,10 +33,10 @@ while True:
     plantD.updateParameters()
 
     # Check conditions section and watering
-
+    currentTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])
+    
     # Send information
-    print("PlantA:", plantB.mode, plantB.waterAmount, plantB.wateringTime, plantB.humidityThreshold)
-    time.sleep(2.5)
+    time.sleep(2)
 
 
 
