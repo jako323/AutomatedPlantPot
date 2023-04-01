@@ -2,27 +2,44 @@ import RPi.GPIO as GPIO
 from time import *
 from PlantClass import Plant
 
-
+# Setup section
 PLANT_A_PUMP_PIN = 12
 PLANT_B_PUMP_PIN = 16
 PLANT_C_PUMP_PIN = 20
 PLANT_D_PUMP_PIN = 21
 
-AUXILIARY_WATER_NOW_BUTTO_PIN = 25
+PLANT_A_HUMSENSOR_PIN = 24
+PLANT_B_HUMSENSOR_PIN = 25
+PLANT_C_HUMSENSOR_PIN = 8
+PLANT_D_HUMSENSOR_PIN = 7
 
-
-plantA = Plant('A', 0, 0.5, 0, 0, 0, PLANT_A_PUMP_PIN)
+plantA = Plant('A', PLANT_A_PUMP_PIN, PLANT_A_HUMSENSOR_PIN)
+plantB = Plant('B', PLANT_B_PUMP_PIN, PLANT_B_HUMSENSOR_PIN)
+plantC = Plant('C', PLANT_C_PUMP_PIN, PLANT_C_HUMSENSOR_PIN)
+plantD = Plant('D', PLANT_D_PUMP_PIN, PLANT_D_HUMSENSOR_PIN)
 
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(plantA.pumpPin, GPIO.OUT)
-GPIO.setup(AUXILIARY_WATER_NOW_BUTTO_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+
+# Main loop
 while True:
-    if(plantA.checkForWateringNeed()):
-        plantA.watering()
-    sleep(1)
+    # Get data from the Internet section
+    plantA.updateParameters()
+    plantB.updateParameters()
+    plantC.updateParameters()
+    plantD.updateParameters()
+
+    # Check conditions section
+
+    # Water section
+
+    # Send information
+
+    sleep(2.5)
+
 
 
 GPIO.cleanup()
