@@ -22,7 +22,15 @@ plantD = Plant('D', PLANT_D_PUMP_PIN, PLANT_D_HUMSENSOR_PIN)
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(plantA.pumpPin, GPIO.OUT)
+GPIO.setup(plantB.pumpPin, GPIO.OUT)
+GPIO.setup(plantC.pumpPin, GPIO.OUT)
+GPIO.setup(plantD.pumpPin, GPIO.OUT)
 
+
+plantA.updateLastWateringTime()
+plantB.updateLastWateringTime()
+plantC.updateLastWateringTime()
+plantD.updateLastWateringTime()
 
 # Main loop
 while True:
@@ -33,10 +41,24 @@ while True:
     plantD.updateParameters()
 
     # Check conditions section and watering
-    currentTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])
+    currentEpochTime = (int)(time.time())
+    print("Current Time:", time.localtime(currentEpochTime))
+    if (plantA.checkForWateringNeed(currentEpochTime)):
+        plantA.watering()
+    
+    if (plantB.checkForWateringNeed(currentEpochTime)):
+        plantB.watering()
+    
+    if (plantC.checkForWateringNeed(currentEpochTime)):
+        plantC.watering()
+
+    if (plantD.checkForWateringNeed(currentEpochTime)):
+        plantD.watering()
     
     # Send information
-    time.sleep(2)
+
+    print("-----------------------")
+    time.sleep(1)
 
 
 
