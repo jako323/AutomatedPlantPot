@@ -32,6 +32,7 @@ plantB.updateLastWateringTime()
 plantC.updateLastWateringTime()
 plantD.updateLastWateringTime()
 
+
 # Main loop
 while True:
     # Get data from the Internet section
@@ -43,21 +44,14 @@ while True:
     # Check conditions section and watering
     currentEpochTime = (int)(time.time())
     print("Current Time:", time.localtime(currentEpochTime))
+
     if (plantA.checkForWateringNeed(currentEpochTime)):
         plantA.watering()
-    
-    if (plantB.checkForWateringNeed(currentEpochTime)):
-        plantB.watering()
-    
-    if (plantC.checkForWateringNeed(currentEpochTime)):
-        plantC.watering()
-
-    if (plantD.checkForWateringNeed(currentEpochTime)):
-        plantD.watering()
-    
-    # Send information
 
     print("-----------------------")
+
+    # Send information
+
     time.sleep(1)
 
 

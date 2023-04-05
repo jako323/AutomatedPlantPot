@@ -15,6 +15,7 @@ class Plant:
 		self.humidityThreshold = 0		# in %
 		self.minWateringInterval = 0	# in hours
 
+		self.lastScheduledDay = time.localtime()[2]
 		self.lastWateringEpochTime = (int)(time.time())
 	
 
@@ -28,6 +29,11 @@ class Plant:
 		print("Plant", self.symbol, "parameters were updated.")
 
 
+	def updateLastScheduledDay(self):
+		self.lastScheduledDay = time.localtime()[2]
+		print("Plant's", self.symbol, "last Scheduled Day was set to:", self.lastScheduledDay)
+
+
 	def updateLastWateringTime(self):
 		self.lastWateringEpochTime = (int)(time.time())
 		print("Plant", self.symbol, "last watering time was set to:", time.localtime(self.lastWateringEpochTime))
@@ -38,21 +44,55 @@ class Plant:
 		if (self.mode == 0):
 			print("Plant", self.symbol, "is turned off.")
 			return False
+		
 		# Manual mode	#TODO: Add conditions
 		elif (self.mode == 1):
+			print("Plant", self.symbol, "is running on mode 1.")
 			return True
-		# Time interval mode	#TODO: Add conditions
-		elif(self.mode == 2):
+		
+		# Time interval mode
+		elif(self.mode == 2
+       		and time.localtime(currentEpochTime)[2] != self.lastScheduledDay
+			and time.localtime(currentEpochTime)[3] >= self.wateringTime[0]
+			and time.localtime(currentEpochTime)[4] >= self.wateringTime[1]):
+			print("Plant", self.symbol, "is running on mode 2.")
 			return True
+		
 		# Time interval + Humidity control mode	#TODO: Add conditions
-		elif (self.mode == 3):
+		elif (self.mode == 3
+				and
+					(
+						(
+							time.localtime(currentEpochTime)[2] != self.lastScheduledDay
+							and time.localtime(currentEpochTime)[3] >= self.wateringTime[0]
+							and time.localtime(currentEpochTime)[4] >= self.wateringTime[1]
+						)
+						and
+						(
+							currentEpochTime >= (self.lastWateringEpochTime + self.minWateringInterval)
+							or
+							(currentEpochTime < (self.lastWateringEpochTime + self.minWateringInterval) and self.getHumidityLevel() < self.humidityThreshold)
+						)
+					)
+
+					or
+
+					(
+						(self.getHumidityLevel() < self.humidityThreshold)
+						and
+						currentEpochTime >= (self.lastWateringEpochTime + self.minWateringInterval)
+					)
+			):
+			print("Plant", self.symbol, "is running on mode 3.")
 			return True
+		
 		# Humidity control mode
 		elif(self.mode == 4
        		and self.getHumidityLevel() < self.humidityThreshold
 			and currentEpochTime >= (self.lastWateringEpochTime + self.minWateringInterval)):
 			print("Plant", self.symbol, "is running on mode 4.")
 			return True
+			
 		else:
 			print("Plant", self.symbol, "doesn't need to be watered.")
 			return False
@@ -64,7 +104,10 @@ class Plant:
 		wateringDuration = self.calculateWateringDuration()
 		time.sleep(wateringDuration)
 		self.pumpOff()
+
 		self.updateLastWateringTime()
+		if (self.mode == 2):
+			self.updateLastScheduledDay()
 
 
 	def calculateWateringDuration(self):
@@ -81,6 +124,6 @@ class Plant:
 
 	def getHumidityLevel(self):		# TODO: Write code working with sensors.
 		# Read from sensor
-		value = 10
+		value = 80
 		return value
 
