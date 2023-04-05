@@ -23,6 +23,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(plantA.pumpPin, GPIO.OUT)
 
+# KOMENTARZ_TEST
 
 # Main loop
 while True:
