@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 from PlantClass import Plant
 
@@ -18,14 +18,14 @@ plantB = Plant('B', PLANT_B_PUMP_PIN, PLANT_B_HUMSENSOR_PIN)
 plantC = Plant('C', PLANT_C_PUMP_PIN, PLANT_C_HUMSENSOR_PIN)
 plantD = Plant('D', PLANT_D_PUMP_PIN, PLANT_D_HUMSENSOR_PIN)
 
-
+"""
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(plantA.pumpPin, GPIO.OUT)
 GPIO.setup(plantB.pumpPin, GPIO.OUT)
 GPIO.setup(plantC.pumpPin, GPIO.OUT)
 GPIO.setup(plantD.pumpPin, GPIO.OUT)
-
+"""
 
 plantA.updateLastWateringTime()
 plantB.updateLastWateringTime()
@@ -56,4 +56,4 @@ while True:
 
 
 
-GPIO.cleanup()
+#GPIO.cleanup()

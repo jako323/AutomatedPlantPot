@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 
 import plantSetupInfo
@@ -115,11 +115,13 @@ class Plant:
 
 
 	def pumpOn(self):
-		GPIO.output(self.pumpPin, GPIO.HIGH)
+		print("Pump is on.")
+		#GPIO.output(self.pumpPin, GPIO.HIGH)
 	
 
 	def pumpOff(self):
-		GPIO.output(self.pumpPin, GPIO.LOW)
+		print("Pump is off.")
+		#GPIO.output(self.pumpPin, GPIO.LOW)
 	
 
 	def getHumidityLevel(self):		# TODO: Write code working with sensors.
