@@ -6,10 +6,10 @@ from PlantClass import Plant
 
 
 # === INITIALIZING PLANTS ===
-plantA = Plant('A', pinout.PLANT_A_PUMP_PIN, pinout.PLANT_A_HUMSENSOR_PIN)
-plantB = Plant('B', pinout.PLANT_B_PUMP_PIN, pinout.PLANT_B_HUMSENSOR_PIN)
-plantC = Plant('C', pinout.PLANT_C_PUMP_PIN, pinout.PLANT_C_HUMSENSOR_PIN)
-plantD = Plant('D', pinout.PLANT_D_PUMP_PIN, pinout.PLANT_D_HUMSENSOR_PIN)
+plantA = Plant('A', pinout.PLANT_A_PUMP_PIN, pinout.PLANT_A_HUMSENSOR_SPI_CHANNEL)
+plantB = Plant('B', pinout.PLANT_B_PUMP_PIN, pinout.PLANT_B_HUMSENSOR_SPI_CHANNEL)
+plantC = Plant('C', pinout.PLANT_C_PUMP_PIN, pinout.PLANT_C_HUMSENSOR_SPI_CHANNEL)
+plantD = Plant('D', pinout.PLANT_D_PUMP_PIN, pinout.PLANT_D_HUMSENSOR_SPI_CHANNEL)
 plantA.updateLastWateringTime()
 plantB.updateLastWateringTime()
 plantC.updateLastWateringTime()
@@ -50,7 +50,6 @@ while True:
         plantD.watering()
 
     # === SENDING INFORMATION TO THE INTERNET ===
-
 
     time.sleep(1)
 

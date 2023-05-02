@@ -2,12 +2,13 @@
 import time
 
 import plantSetupInfo
+import humiditySensor
 
 class Plant:
-	def __init__(self, symbol, pumpPin, humiditySensorPin):
+	def __init__(self, symbol, pumpPin, humiditySensorSpiChannel):
 		self.symbol = symbol
 		self.pumpPin = pumpPin
-		self.humiditySensorPin = humiditySensorPin
+		self.humiditySensorSpiChannel = humiditySensorSpiChannel
 
 		self.mode = 0					# 0 - plant is off, 1 - manual mode, 2 - time interval mode, 3 - humidity control mode
 		self.waterAmount = 0			# in ml, the converted to pump time duration
@@ -97,7 +98,5 @@ class Plant:
 	
 
 	def getHumidityLevel(self):		# TODO: Write code working with sensors.
-		# Read from sensor
-		value = 20
-		return value
-
+		return humiditySensor.readInPercentage(self.humiditySensorSpiChannel)
+	
