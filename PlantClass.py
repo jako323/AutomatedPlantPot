@@ -16,7 +16,7 @@ class Plant:
 		self.humidityThreshold = 0		# in %
 		self.minWateringInterval = 0	# in seconds
 
-		self.lastScheduledDay = time.localtime()[2]
+		self.lastScheduledDay = time.localtime()[2] - 1
 		self.lastWateringEpochTime = (int)(time.time())
 	
 

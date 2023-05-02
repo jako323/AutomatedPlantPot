@@ -1,4 +1,4 @@
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 
 import pinout
@@ -17,16 +17,12 @@ plantD.updateLastWateringTime()
 
 
 # === GPIO SETUP ===
-"""
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(plantA.pumpPin, GPIO.OUT)
 GPIO.setup(plantB.pumpPin, GPIO.OUT)
 GPIO.setup(plantC.pumpPin, GPIO.OUT)
 GPIO.setup(plantD.pumpPin, GPIO.OUT)
-"""
-
-plantA.lastScheduledDay = 4
 
 # === MAIN LOOP ===
 while True:
@@ -51,7 +47,7 @@ while True:
 
     # === SENDING INFORMATION TO THE INTERNET ===
 
-    time.sleep(1)
+    time.sleep(5)
 
 
 
