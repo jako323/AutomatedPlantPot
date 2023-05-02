@@ -13,7 +13,7 @@ PLANT_WATERAMOUNT = {
 }
 
 PLANT_WATERINGTIME = {  # (hours, minutes)
-    "A": (15, 52),
+    "A": (16, 48),
     "B": (9, 30),
     "C": (9, 30),
     "D": (9, 30)

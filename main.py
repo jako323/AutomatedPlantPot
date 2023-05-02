@@ -4,6 +4,7 @@ import time
 import pinout
 from PlantClass import Plant
 import waterLevelSensor
+import lightSensor
 
 
 # === INITIALIZING PLANTS ===
@@ -11,10 +12,6 @@ plantA = Plant('A', pinout.PLANT_A_PUMP_PIN, pinout.PLANT_A_HUMSENSOR_SPI_CHANNE
 plantB = Plant('B', pinout.PLANT_B_PUMP_PIN, pinout.PLANT_B_HUMSENSOR_SPI_CHANNEL)
 plantC = Plant('C', pinout.PLANT_C_PUMP_PIN, pinout.PLANT_C_HUMSENSOR_SPI_CHANNEL)
 plantD = Plant('D', pinout.PLANT_D_PUMP_PIN, pinout.PLANT_D_HUMSENSOR_SPI_CHANNEL)
-plantA.updateLastWateringTime()
-plantB.updateLastWateringTime()
-plantC.updateLastWateringTime()
-plantD.updateLastWateringTime()
 
 
 # === GPIO SETUP ===
@@ -25,6 +22,7 @@ GPIO.setup(plantB.pumpPin, GPIO.OUT)
 GPIO.setup(plantC.pumpPin, GPIO.OUT)
 GPIO.setup(plantD.pumpPin, GPIO.OUT)
 
+
 # === MAIN LOOP ===
 while True:
     # === GETTING DATA FROM THE INTERNET ===
@@ -33,7 +31,6 @@ while True:
     plantC.updateParameters()
     plantD.updateParameters()
 
-    
 
     # === WATERING ===
     currentEpochTime = (int)(time.time())
@@ -55,6 +52,7 @@ while True:
 
     # === SENDING DATA TO THE INTERNET ===
     print("Current tank's water level: ", waterLevelSensor.readInPercentage(), "%", sep="")
+    print("Current pot's light level: ", lightSensor.readInPercentage(), "%", sep="")
 
 
     time.sleep(2.5)
