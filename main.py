@@ -3,6 +3,7 @@ import time
 
 import pinout
 from PlantClass import Plant
+import waterLevelSensor
 
 
 # === INITIALIZING PLANTS ===
@@ -32,22 +33,31 @@ while True:
     plantC.updateParameters()
     plantD.updateParameters()
 
+    
+
     # === WATERING ===
     currentEpochTime = (int)(time.time())
     print("Current Time:", time.localtime(currentEpochTime))
 
-    if (plantA.checkForWateringNeed(currentEpochTime)):
-        plantA.watering()
-    if (plantB.checkForWateringNeed(currentEpochTime)):
-        plantB.watering()
-    if (plantC.checkForWateringNeed(currentEpochTime)):
-        plantC.watering()
-    if (plantD.checkForWateringNeed(currentEpochTime)):
-        plantD.watering()
+    if (waterLevelSensor.isWaterInTank()):
+        if (plantA.checkForWateringNeed(currentEpochTime)):
+            plantA.watering()
+        if (plantB.checkForWateringNeed(currentEpochTime)):
+            plantB.watering()
+        if (plantC.checkForWateringNeed(currentEpochTime)):
+            plantC.watering()
+        if (plantD.checkForWateringNeed(currentEpochTime)):
+            plantD.watering()
+    else:
+        print("Water level in tank dropped below given treshold. All watering actions are suspended.")
+        print("Please fill up the water compartment.")
 
-    # === SENDING INFORMATION TO THE INTERNET ===
 
-    time.sleep(5)
+    # === SENDING DATA TO THE INTERNET ===
+    print("Current tank's water level: ", waterLevelSensor.readInPercentage(), "%", sep="")
+
+
+    time.sleep(2.5)
 
 
 
