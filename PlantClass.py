@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 
 import plantSetupInfo
@@ -9,13 +9,14 @@ class Plant:
 		self.pumpPin = pumpPin
 		self.humiditySensorPin = humiditySensorPin
 
-		self.mode = 0					# 0 - plant is off, 1 - manual mode, 2 - time interval mode, 3 - time plus humidity control mode, 4 - humidity control mode
+		self.mode = 0					# 0 - plant is off, 1 - manual mode, 2 - time interval mode, 3 - humidity control mode
 		self.waterAmount = 0			# in ml, the converted to pump time duration
 		self.wateringTime = 0			# time of scheduled watering
 		self.humidityThreshold = 0		# in %
-		self.minWateringInterval = 0	# in hours
+		self.minWateringInterval = 0	# in seconds
 
-		self.lastWateringTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])	
+		self.lastScheduledDay = time.localtime()[2]
+		self.lastWateringEpochTime = (int)(time.time())
 	
 
 	def updateParameters(self):
@@ -23,33 +24,62 @@ class Plant:
 		self.waterAmount = plantSetupInfo.PLANT_WATERAMOUNT[self.symbol]
 		self.wateringTime = plantSetupInfo.PLANT_WATERINGTIME[self.symbol]
 		self.humidityThreshold = plantSetupInfo.PLANT_HUMIDITYTRESHOLD[self.symbol]
-		self.minWateringInterval = plantSetupInfo.PLANT_MINWATERINGINTERVAL[self.symbol]
+		tempWateringInterval = plantSetupInfo.PLANT_MINWATERINGINTERVAL[self.symbol]
+		self.minWateringInterval = tempWateringInterval[0] * 3600 + tempWateringInterval[1] * 60 + tempWateringInterval[2]
+		# print("Plant", self.symbol, "parameters were updated.")
+
+
+	def updateLastScheduledDay(self):
+		self.lastScheduledDay = time.localtime()[2]
+		print("Plant's", self.symbol, "last Scheduled Day was set to:", self.lastScheduledDay)
 
 
 	def updateLastWateringTime(self):
-		self.lastWateringTime = (time.localtime()[2], time.localtime()[3], time.localtime()[4])
+		self.lastWateringEpochTime = (int)(time.time())
+		print("Plant", self.symbol, "last watering time was set to:", time.localtime(self.lastWateringEpochTime))
 
 
-	def checkForWateringNeed(self, currentTime):
-		if (self.mode == 1):	# Manual mode	#TODO: Add conditions
+	def checkForWateringNeed(self, currentEpochTime):
+		# Device Turned off
+		if (self.mode == 0):
+			print("Plant", self.symbol, "is turned off.")
+			return False
+		
+		# Manual mode	#TODO: Add conditions
+		elif (self.mode == 1):
+			print("Plant ", self.symbol, " is running on mode ", self.mode, ".", sep='')
 			return True
-		elif(self.mode == 2):	# Time interval mode	#TODO: Add conditions
+		
+		# Time interval mode
+		elif(self.mode == 2
+       		and time.localtime(currentEpochTime)[2] != self.lastScheduledDay
+			and time.localtime(currentEpochTime)[3] >= self.wateringTime[0]
+			and time.localtime(currentEpochTime)[4] >= self.wateringTime[1]):
+			print("Plant ", self.symbol, " is running on mode ", self.mode, ".", sep='')
 			return True
-		elif (self.mode ==3):	# Time interval + Humidity control mode	#TODO: Add conditions
+		
+		# Humidity control mode
+		elif(self.mode == 3
+       		and self.getHumidityLevel() < self.humidityThreshold
+			and currentEpochTime >= (self.lastWateringEpochTime + self.minWateringInterval)):
+			print("Plant ", self.symbol, " is running on mode ", self.mode, ".", sep='')
 			return True
-		elif(self.mode == 4):	# Humidity control mode	#TODO: Add conditions
-			return True
+			
 		else:
-			print("The plant", self.symbol, "is turned off or wrong mode was declared.")
+			print("Plant", self.symbol, "doesn't need to be watered.")
 			return False
 
 
 	def watering(self):
-		print("The plant", self.symbol, "is now watered.")		
+		print("Plant", self.symbol, "is now watered.")		
 		self.pumpOn()
 		wateringDuration = self.calculateWateringDuration()
 		time.sleep(wateringDuration)
 		self.pumpOff()
+
+		self.updateLastWateringTime()
+		if (self.mode == 2):
+			self.updateLastScheduledDay()
 
 
 	def calculateWateringDuration(self):
@@ -57,9 +87,17 @@ class Plant:
 
 
 	def pumpOn(self):
-		GPIO.output(self.pumpPin, GPIO.HIGH)
+		print("Pump is on.")
+		#GPIO.output(self.pumpPin, GPIO.HIGH)
 	
 
 	def pumpOff(self):
-		GPIO.output(self.pumpPin, GPIO.LOW)
+		print("Pump is off.")
+		#GPIO.output(self.pumpPin, GPIO.LOW)
+	
+
+	def getHumidityLevel(self):		# TODO: Write code working with sensors.
+		# Read from sensor
+		value = 20
+		return value
 
