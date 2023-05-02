@@ -1,8 +1,8 @@
-#import RPi.GPIO as GPIO
 import time
 
 import plantSetupInfo
 import humiditySensor
+import pump
 
 class Plant:
 	def __init__(self, symbol, pumpPin, humiditySensorSpiChannel):
@@ -67,16 +67,16 @@ class Plant:
 			return True
 			
 		else:
-			print("Plant", self.symbol, "doesn't need to be watered.")
+			print("Plant", self.symbol, "doesn't need to be watered. It's current humidity level is", humiditySensor.readInPercentage(self.humiditySensorSpiChannel))
 			return False
 
 
 	def watering(self):
 		print("Plant", self.symbol, "is now watered.")		
-		self.pumpOn()
+		pump.turnOn(self.pumpPin)
 		wateringDuration = self.calculateWateringDuration()
 		time.sleep(wateringDuration)
-		self.pumpOff()
+		pump.turnOff(self.pumpPin)
 
 		self.updateLastWateringTime()
 		if (self.mode == 2):
@@ -85,16 +85,6 @@ class Plant:
 
 	def calculateWateringDuration(self):
 		return self.waterAmount * 2
-
-
-	def pumpOn(self):
-		print("Pump is on.")
-		#GPIO.output(self.pumpPin, GPIO.HIGH)
-	
-
-	def pumpOff(self):
-		print("Pump is off.")
-		#GPIO.output(self.pumpPin, GPIO.LOW)
 	
 
 	def getHumidityLevel(self):		# TODO: Write code working with sensors.

@@ -1,8 +1,8 @@
 PLANT_MODE = {
-    "A": 2,
-    "B": 0,
-    "C": 0,
-    "D": 0
+    "A": 3,
+    "B": 3,
+    "C": 3,
+    "D": 3
 }
 
 PLANT_WATERAMOUNT = {
@@ -20,16 +20,16 @@ PLANT_WATERINGTIME = {  # (hours, minutes)
 }
 
 PLANT_HUMIDITYTRESHOLD = {
-    "A": 40,
-    "B": 45,
-    "C": 40,
-    "D": 55
+    "A": 30,
+    "B": 30,
+    "C": 30,
+    "D": 30
 }
 
 PLANT_MINWATERINGINTERVAL = { # TODO: (h, min, sec) for debugging, then change to (d, h, m)
-    "A": (0, 0, 30),
-    "B": (0, 0, 35),
-    "C": (0, 0, 8),
-    "D": (0, 10, 0),
+    "A": (0, 0, 2),
+    "B": (0, 0, 2),
+    "C": (0, 0, 2),
+    "D": (0, 0, 2),
 }
 
