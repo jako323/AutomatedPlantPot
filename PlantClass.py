@@ -37,7 +37,7 @@ class Plant:
 
 	def updateLastWateringTime(self):
 		self.lastWateringEpochTime = (int)(time.time())
-		print("Plant", self.symbol, "last watering time was set to:", time.localtime(self.lastWateringEpochTime))
+		print("Plant's", self.symbol, "last watering time was set to:", time.localtime(self.lastWateringEpochTime))
 
 
 	def checkForWateringNeed(self, currentEpochTime):
@@ -67,12 +67,12 @@ class Plant:
 			return True
 			
 		else:
-			print("Plant", self.symbol, "doesn't need to be watered. It's current humidity level is", humiditySensor.readInPercentage(self.humiditySensorSpiChannel))
+			print("Plant ", self.symbol, " doesn't need to be watered (Current humidity level: ", humiditySensor.readInPercentage(self.humiditySensorSpiChannel), "%)", sep="")
 			return False
 
 
 	def watering(self):
-		print("Plant", self.symbol, "is now watered.")		
+		print(" | Plant", self.symbol, "is now watered.")		
 		pump.turnOn(self.pumpPin)
 		wateringDuration = self.calculateWateringDuration()
 		time.sleep(wateringDuration)

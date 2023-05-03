@@ -25,6 +25,7 @@ GPIO.setup(plantD.pumpPin, GPIO.OUT)
 
 # === MAIN LOOP ===
 while True:
+    print("=======================================================================================================================================")
     # === GETTING DATA FROM THE INTERNET ===
     plantA.updateParameters()
     plantB.updateParameters()
@@ -52,7 +53,7 @@ while True:
 
     # === SENDING DATA TO THE INTERNET ===
     print("Current tank's water level: ", waterLevelSensor.readInPercentage(), "%", sep="")
-    print("Current pot's light level: ", lightSensor.readInPercentage(), "%", sep="")
+    print("Current pot's light level:  ", lightSensor.readInPercentage(), "%", sep="")
 
 
     time.sleep(2.5)

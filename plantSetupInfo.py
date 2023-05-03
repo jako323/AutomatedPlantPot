@@ -13,7 +13,7 @@ PLANT_WATERAMOUNT = {
 }
 
 PLANT_WATERINGTIME = {  # (hours, minutes)
-    "A": (16, 48),
+    "A": (16, 00),
     "B": (9, 30),
     "C": (9, 30),
     "D": (9, 30)
@@ -27,9 +27,9 @@ PLANT_HUMIDITYTRESHOLD = {
 }
 
 PLANT_MINWATERINGINTERVAL = { # TODO: (h, min, sec) for debugging, then change to (d, h, m)
-    "A": (0, 0, 2),
-    "B": (0, 0, 2),
-    "C": (0, 0, 2),
-    "D": (0, 0, 2),
+    "A": (0, 0, 15),
+    "B": (0, 0, 15),
+    "C": (0, 0, 15),
+    "D": (0, 0, 15),
 }
 
