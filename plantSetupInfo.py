@@ -1,7 +1,7 @@
 PLANT_MODE = {
-    "A": 3,
+    "A": 2,
     "B": 3,
-    "C": 3,
+    "C": 2,
     "D": 3
 }
 
@@ -12,10 +12,10 @@ PLANT_WATERAMOUNT = {
     "D": 1
 }
 
-PLANT_WATERINGTIME = {  # (hours, minutes)
-    "A": (16, 48),
+PLANT_WATERINGTIME = {  # in test_intervalmode branch this is changed to (sec, milisec)
+    "A": (15, 00),
     "B": (9, 30),
-    "C": (9, 30),
+    "C": (10, 00),
     "D": (9, 30)
 }
 

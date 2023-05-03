@@ -31,7 +31,7 @@ class Plant:
 
 
 	def updateLastScheduledDay(self):
-		self.lastScheduledDay = time.localtime()[2]
+		self.lastScheduledDay = time.localtime()[4]	# in test_intervalmode branch this is changed to minutes
 		print("Plant's", self.symbol, "last Scheduled Day was set to:", self.lastScheduledDay)
 
 
@@ -53,9 +53,9 @@ class Plant:
 		
 		# Time interval mode
 		elif(self.mode == 2
-       		and time.localtime(currentEpochTime)[2] != self.lastScheduledDay
-			and time.localtime(currentEpochTime)[3] >= self.wateringTime[0]
-			and time.localtime(currentEpochTime)[4] >= self.wateringTime[1]):
+       		and time.localtime(currentEpochTime)[4] != self.lastScheduledDay
+			and time.localtime(currentEpochTime)[5] >= self.wateringTime[0]
+			and time.localtime(currentEpochTime)[6] >= self.wateringTime[1]):
 			print("Plant ", self.symbol, " is running on mode ", self.mode, ".", sep='')
 			return True
 		

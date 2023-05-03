@@ -55,8 +55,7 @@ while True:
     print("Current pot's light level: ", lightSensor.readInPercentage(), "%", sep="")
 
 
-    time.sleep(2.5)
-
+    time.sleep(2)
 
 
 #GPIO.cleanup()
