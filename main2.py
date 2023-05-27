@@ -10,7 +10,6 @@ from PlantClass import Plant
 import waterLevelSensor
 import lightSensor
 
-
 from Blynk import BlynkLib
 import RPi.GPIO as GPIO
 from Blynk import BlynkTimer
@@ -66,6 +65,18 @@ def v3_write_handler(value):
     else:
         GPIO.output(PLANT_D_PUMP_PIN, GPIO.LOW)
         print('PUMP D OFF')
+            
+    # Wyświetlanie odczytanych wartości
+    print("Wartość z pinu 0:", pin4_value)
+    print("Wartość z pinu 1:", pin5_value)
+    print("Wartość z pinu 2:", pin6_value)
+    print("Wartość z pinu 3:", pin7_value)
+
+# Sync data
+@blynk.on("connected")
+def blynk_connected():
+    print("Raspberry Pi Connected to New Blynk") 
+
 
  
 # === INITIALIZING PLANTS ===
@@ -73,6 +84,21 @@ plantA = Plant('A', pinout.PLANT_A_PUMP_PIN, pinout.PLANT_A_HUMSENSOR_SPI_CHANNE
 plantB = Plant('B', pinout.PLANT_B_PUMP_PIN, pinout.PLANT_B_HUMSENSOR_SPI_CHANNEL)
 plantC = Plant('C', pinout.PLANT_C_PUMP_PIN, pinout.PLANT_C_HUMSENSOR_SPI_CHANNEL)
 plantD = Plant('D', pinout.PLANT_D_PUMP_PIN, pinout.PLANT_D_HUMSENSOR_SPI_CHANNEL)
+
+    # Funkcja obsługująca odczyt wartości z pinów
+def read_pins():
+    # Odczyt wartości z pinu 0
+    pinout.PLANT_A_HUMSENSOR_SPI_CHANNEL = blynk.get_pin_value(4)
+    
+    # Odczyt wartości z pinu 1
+    pinout.PLANT_B_HUMSENSOR_SPI_CHANNEL = blynk.get_pin_value(5)
+    
+    # Odczyt wartości z pinu 2
+    pinout.PLANT_C_HUMSENSOR_SPI_CHANNEL = blynk.get_pin_value(6)
+    
+    # Odczyt wartości z pinu 3
+    pinout.PLANT_D_HUMSENSOR_SPI_CHANNEL = blynk.get_pin_value(7)
+  
 
 # === GPIO SETUP ===
 GPIO.setmode(GPIO.BCM)
@@ -92,28 +118,7 @@ while True:
     plantC.updateParameters()
     plantD.updateParameters()
 
-    #================================================================
-    # Funkcja do przesyłania wartości do wirtualnych pinów
-    def set_virtual_pin_value(pin, value):
-        blynk.virtual_write(pin, value)
 
-    valueA = Plant.getHumidityLevel(plantA)
-    valueB = Plant.getHumidityLevel(plantB)
-    valueC = Plant.getHumidityLevel(plantC)
-    valueD = Plant.getHumidityLevel(plantD)
-    
-    valueLight = lightSensor.readInPercentage()
-    valueWater = waterLevelSensor.readInPercentage()
-    # Przypisania wartości do wirtualnego pinu
-    set_virtual_pin_value(4, valueA)
-    set_virtual_pin_value(5, valueB)
-    set_virtual_pin_value(6, valueC)
-    set_virtual_pin_value(7, valueD)
-    
-    set_virtual_pin_value(8, valueLight)
-    set_virtual_pin_value(9, valueWater)
-    #================================================================
-    
     # === WATERING ===
     currentEpochTime = (int)(time.time())
     print("Current Time:", time.localtime(currentEpochTime))
@@ -144,4 +149,3 @@ while True:
 
 
 #GPIO.cleanup()
-

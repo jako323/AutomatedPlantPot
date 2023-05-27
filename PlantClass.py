@@ -67,7 +67,7 @@ class Plant:
 			return True
 			
 		else:
-			print("Plant ", self.symbol, " doesn't need to be watered (Current humidity level: ", humiditySensor.readInPercentage(self.humiditySensorSpiChannel), "%)", sep="")
+			print("Plant ", self.symbol, " doesn't need to be watered     (Current humidity level: ", humiditySensor.readInPercentage(self.humiditySensorSpiChannel), "%)", sep="")
 			return False
 
 
